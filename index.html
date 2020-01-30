@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta charset="utf-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<title>寶寶記憶配對</title>
+		<style>
+			body{
+				padding: 0;
+				margin: 0;
+				background-color: black;
+			}
+			
+			#game_area {
+			  	position: absolute;
+			  	left:     50%;
+			  	top:      50%;
+				background-image: url('bg.png');
+			}
+			
+			#percent{
+				font-size: 5.92%;
+				position: relative;
+				top: 41.11%;
+				width: 100%;
+				text-align: center;
+			}
+			
+			#progress {
+				position: relative;
+				top: 41.11%;
+				margin-left: 15%;
+			    width: 70%;
+			    height: 4.44%;
+			    background-color: grey;
+			    box-shadow: 2px 2px;
+			}
+			
+			#bar {
+			    width: 1%;
+			    height: 100%;
+			    background-color: #9d5970;
+			}
+			
+			#title{
+				padding-top: 1.48%;
+			}
+				#title > img{
+					width: 80%;
+					height: auto;
+				}
+			#index_image{
+				display: block;
+				width: 70%;
+				height: auto;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.btn{
+				font-size: 2.96vw;
+				width: 13.7%;
+				padding: 1.48%;
+				background-color: #cdcdcd;
+				box-shadow: 2px 2px;
+				display: inline-block;
+				cursor: pointer;
+				margin: 0.44%;
+				text-align: center;
+			}
+			.btn:active{
+				transform: scale(.95);
+				user-select: none;
+			}
+			.btn-index{
+				position: relative;
+				left: 50%;
+				bottom: 4.44%;
+				margin-left: -6.85%;
+			}
+			#gallery{
+				margin-left: auto;
+				margin-right: auto;
+				height: 80%;
+				overflow-y: scroll;
+				text-align: center;
+			}
+			.gallery-item{
+				margin: 0.74%;
+				max-width: 98.52%;
+			}
+			#tip{
+				font-size: 3vw;
+				position: absolute;
+				top: 35%;
+				left: 19.26%;
+				text-align: center;
+				
+				font-weight: bold;
+				width: 60%;
+				background-color: #d3d2e8;
+				border-radius: 1.48vw;
+				padding: 0.74%;
+			}
+			
+			#counter_board{
+				font-size: 5.18vw;
+				text-align: center;
+			}
+			
+			#playground{
+				width: 98%;
+				height: 73.5%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			
+			#logo{
+				font-size: 2.96vw;
+				font-weight: bold;
+				position: relative;
+				top: 5%;
+				left:60%;
+				width: 26.66%;
+				text-align: center;
+				background-color: #cdcdcd;
+				box-shadow: 2px 2px;
+				padding: 0.44%;
+			}
+				#logo > a{
+					text-decoration: none;
+				}
+			
+			/* entire container, keeps perspective */
+			.flip-container {
+				display: inline-block;
+				perspective: 1000px;
+				
+				margin: 1.4%;
+			}
+				/* flip the pane when hovered */
+				.flip-container.hover .flipper {
+					transform: rotateY(180deg);
+				}
+
+			.flip-container {
+				width: 22%;
+				height: 22%;
+			}
+			
+			.flipper, .front, .back{
+				width: 100%;
+				height: 100%;
+			}
+
+			/* flip speed goes here */
+			.flipper {
+				transition: 0.3s;
+				transform-style: preserve-3d;
+				-webkit-transform-style: preserve-3d;
+
+				position: relative;
+			}
+
+			/* hide back of pane during swap */
+			.front, .back {
+				backface-visibility: hidden;
+
+				position: absolute;
+				top: 0;
+				left: 0;
+								
+				background-repeat: no-repeat;
+				background-size: cover;
+			}
+
+			/* front pane, placed above back */
+			.front {
+				z-index: 2;
+				/* for firefox 31 */
+				transform: rotateY(0deg);
+				background-color: #ffffff;
+			}
+
+			/* back, initially hidden pane */
+			.back {
+				transform: rotateY(180deg);
+				background-color: #dddddd;
+				
+				background-image: url('cover.png');
+			}
+			
+			.center{
+				text-align: center;
+			}
+			
+			.blink{
+				animation: blinker 2s linear infinite;
+			}
+			
+			.disappear{
+				animation: disappears .3s forwards;
+			}
+			
+			.disappear-slow{
+				animation: disappears 4s forwards;
+			}
+			
+			.none{
+				display: none;
+			}
+
+			@keyframes blinker {  
+				50% { opacity: 0; }
+			}
+			
+			@keyframes disappears{
+				0% { opacity: 1; }
+				100% { opacity: 0; }
+			}
+			
+			@media screen and (orientation: landscape){
+				#title > img{
+					height: 10vh;
+					width: auto;
+				}
+				#index_image{
+					height: 65vh;
+					width: auto;
+				}
+				#tip{
+					font-size: 2.25vh;
+				}
+				.btn{
+					width: 12vh;
+					padding: 0.885vh;
+					font-size: 2vh;
+				}
+				#btn_start{
+					margin: 1.48vh;
+				}
+				#btn_gallery{
+					margin: 1.48vh;
+				}
+				.btn-index{
+					bottom: 1.48vh;
+				}
+				#counter_board{
+					font-size: 3.33vh;
+					
+				}
+				#logo{
+					font-size: 2.22vh;
+					width: 26vh;
+				}
+				#playground{
+					width: 73.5vh;
+					height: 73.5vh;
+				}
+			}
+		</style>
+		<script>
+			var interval;
+			//關卡階段
+			var currentStage = 0;
+			const STAGE_LOADING = 0;
+			const STAGE_MENU = 1;
+			const STAGE_GALLERY = 2;
+			const STAGE_PREPARE = 3;
+			const STAGE_PLAYING = 4;
+			const STAGE_GAME_COMPLETE = 5;
+			const STAGE_GAME_OVER = 6;
+			//卡片種類數量
+			const CARD_NUMBER = 8;
+			//卡片圖片種類
+			const CARD_IMG_NUMBER = 20;
+			//聲音數量
+			const SOUND_NUMBER = 7;
+			//素材需要loading數量
+			const LOAD_TOTAL = CARD_IMG_NUMBER + SOUND_NUMBER + 1;//卡片背面
+			//亂數排列的卡片id
+			var cardList = [];
+			var cardImgList = [];
+			//完成配對的排組數
+			var doneCount = 0;
+			var timeCounter = 0;
+			//介面物件
+			var gameArea;
+			var percent, progress, bar;
+			var title;
+			var indexImage;
+			var btnStart, btnGallery, btnIndex;
+			var gallery;
+			var tip;
+			var counterBoard;
+			var playground;
+			var logo;
+			var empty;
+			//聲音物件
+			var sound_start, sound_complete, sound_over, sound_bg, sound_else, sound_disappear, sound_thanks;
+			//讀取進度
+			var loadCount = 0;
+			var loadPercent = 0;
+			
+			var gamePause = false;
+			var hasFlipped = false;
+			//掀開的第一張牌和第二張牌element的id
+			var cardOneId = -1;
+			var cardTwoId = -1;
+			var pauseFlip = true;
+			//記憶牌組時間
+			const PREPARE_TIME = 8;
+			//遊戲時間
+			const PLAY_TIME = 90;
+			var minute = 0;
+			var second = 0;
+			//卡片狀態:背面、正面、配對完成
+			const STATUS_BACK = 0;
+			const STATUS_FRONT = 1;
+			const STATUS_DONE = 2;
+			
+			function onload(){
+				gameArea = document.getElementById('game_area');
+				for(var i=0;i<CARD_IMG_NUMBER;i++){
+					cardImgList[i] = i;
+				}
+				percent = document.createElement('div');
+				percent.id = 'percent';
+				progress = document.createElement('div');
+				progress.id = 'progress';
+				bar = document.createElement('div');
+				bar.id = 'bar';
+				progress.appendChild(bar);
+				title = document.createElement('div');
+				title.id = 'title';
+				title.classList.add('center');
+				var title_img = document.createElement('img');
+				title_img.src = 'title.png';
+				title.appendChild(title_img);
+				indexImage = document.createElement('img');
+				indexImage.id = 'index_image';
+				indexImage.src = 'cover.png';
+				btnStart = document.createElement('div');
+				btnStart.id = 'btn_start';
+				btnStart.innerHTML = '開始挑戰';
+				btnStart.classList.add('btn');
+				btnGallery = document.createElement('div');
+				btnGallery.id = 'btn_gallery';
+				btnGallery.innerHTML = '卡片一覽';
+				btnGallery.classList.add('btn');
+				btnIndex = document.createElement('div');
+				btnIndex.id = 'btn_index';
+				btnIndex.innerHTML = '回主選單';
+				btnIndex.classList.add('btn');
+				
+				gallery = document.createElement('div');
+				gallery.id = 'gallery';
+				for(var i=0;i<CARD_IMG_NUMBER;i++){
+					var img = document.createElement('img');
+					img.classList.add('gallery-item');
+					img.src = 'card_'+i+'.png';
+					gallery.appendChild(img);
+				}
+				
+				tip = document.createElement('div');
+				tip.id = 'tip';
+				counterBoard = document.createElement('div');
+				counterBoard.id = 'counter_board';
+				playground = document.createElement('div');
+				playground.id = 'playground';
+				logo = document.createElement('div');
+				logo.id = 'logo';
+				logo.innerHTML = 'By ';
+				var alink = document.createElement('a');
+				alink.href = 'javascript:logo.click();';
+				alink.innerHTML = '木澤的研發腦';
+				logo.appendChild(alink);
+				empty = document.createElement('div');
+				empty.style.height = '60%';
+				document.addEventListener('click',function(e){
+					if(e.target && e.target.id == 'logo'){
+						sound_thanks.play();
+						setTimeout(function(){
+							if(currentStage == STAGE_PREPARE || currentStage == STAGE_PLAYING){
+								gamePause = true;
+								if(confirm('遊戲進行中，確定要前往木澤的研發腦網站嗎?')){
+									window.location.href = 'https://woodloch.blog';
+								}else{
+									gamePause = false;
+								}
+							}else{
+								window.location.href = 'https://woodloch.blog';
+							}
+						}, 1200);
+					}
+					switch(currentStage){
+						case STAGE_MENU:
+							if(e.target){
+								if(e.target.id == 'btn_start'){
+									sound_start.play();
+									startPrepare();
+									sound_bg.play();
+								}else if(e.target.id == 'btn_gallery'){
+									sound_else.play();
+									showGallery();
+								}
+							}
+							break;
+						case STAGE_GALLERY:
+							if(e.target){
+								if(e.target.id == 'btn_index'){
+									sound_else.play();
+									showMenu();
+								}
+							}
+							break;
+						case STAGE_PREPARE:
+							break;
+						case STAGE_PLAYING:
+							if(e.target && (e.target.classList.contains('front') || e.target.classList.contains('back'))){
+								if(!pauseFlip){
+									var card = e.target.parentNode.parentNode;
+									if(card.dataset['status'] == STATUS_BACK){
+										flip(card);
+										if(hasFlipped){
+											pauseFlip = true;
+											cardTwoId = card.id;								
+											console.log('cardTwoId='+cardTwoId);
+											if(document.querySelector('#'+cardOneId).dataset['id'] == document.querySelector('#'+cardTwoId).dataset['id']){
+												doneCount++;
+												sound_disappear.play();
+												card.dataset['status'] = STATUS_DONE;
+												document.querySelector('#'+cardOneId).dataset['status'] = STATUS_DONE;
+												pauseFlip = true;
+												setTimeout(function(){
+													card.classList.toggle('disappear');
+													document.querySelector('#'+cardOneId).classList.toggle('disappear');
+													pauseFlip = false;
+													if(doneCount == CARD_NUMBER){
+														clearInterval(interval);
+														setTimeout(function(){
+															sound_bg.pause();
+															sound_complete.play();
+															gameComlete();
+														}, 300);
+													}
+												}, 300);
+											}else{
+												setTimeout(function(){
+													flip(card);
+													flip(document.querySelector('#'+cardOneId));
+												}, 300);
+											}
+											hasFlipped = false;
+											setTimeout(function(){pauseFlip = false;}, 300);
+										}else{
+											cardOneId = card.id;
+											console.log('cardOneId='+cardOneId);
+											hasFlipped = true;
+										}
+									}
+								}
+							}
+							break;
+						case STAGE_GAME_COMPLETE:
+						case STAGE_GAME_OVER:
+							if(e.target){
+								if(e.target.id == 'btn_index'){
+									sound_else.play();
+									showMenu();
+									e.target.classList.remove('btn-index');
+								}
+							}
+							break;
+					}
+					
+				});
+				window.addEventListener("resize", function(){
+					resizeGame();
+				});
+				window.dispatchEvent(new Event('resize'));
+				showLoading();
+			}
+			
+			function showLoading(){
+				currentStage = STAGE_LOADING;
+				clearScreen();
+				percent.innerHTML = '1%';
+				bar.style.width = 1 + '%';
+				gameArea.appendChild(title);
+				gameArea.appendChild(percent);
+				gameArea.appendChild(progress);
+				gameArea.appendChild(logo);
+				
+				loadCount = 0;
+				loadPercent = 0;
+				var img = new Image();
+				img.src = 'cover.png';
+				if(img.complete){
+					updateProgress();
+				}else{
+					img.onload = function(){
+						updateProgress();
+					};
+				}
+				for(var i=0;i<CARD_IMG_NUMBER;i++){
+					img = new Image();
+					img.src = 'card_'+cardImgList[i]+'.png';
+					if(img.complete){
+						updateProgress();
+					}else{
+						img.onload = function(){
+							updateProgress();
+						};
+					}
+				}
+				sound_start = document.createElement('audio');
+				sound_start.src = 'start.mp3';
+				sound_start.preload = 'auto';
+				sound_start.oncanplaythrough = updateProgress();
+				
+				sound_complete = document.createElement('audio');
+				sound_complete.src = 'complete.mp3';
+				sound_complete.preload = 'auto';
+				sound_complete.oncanplaythrough = updateProgress();
+				
+				sound_over = document.createElement('audio');
+				sound_over.src = 'over.mp3';
+				sound_over.preload = 'auto';
+				sound_over.oncanplaythrough = updateProgress();
+				
+				sound_else = document.createElement('audio');
+				sound_else.src = 'else.mp3';
+				sound_else.preload = 'auto';
+				sound_else.oncanplaythrough = updateProgress();
+				
+				sound_disappear = document.createElement('audio');
+				sound_disappear.src = 'disappear.mp3';
+				sound_disappear.preload = 'auto';
+				sound_disappear.oncanplaythrough = updateProgress();
+				
+				sound_bg = document.createElement('audio');
+				sound_bg.loop = true;
+				sound_bg.src = 'bg.mp3';
+				sound_bg.preload = 'auto';
+				sound_bg.oncanplaythrough = updateProgress();
+				
+				sound_thanks = document.createElement('audio');
+				sound_thanks.src = 'thanks.mp3';
+				sound_thanks.preload = 'auto';
+				sound_thanks.oncanplaythrough = updateProgress();
+			}
+			
+			function updateProgress(){
+				loadCount++;
+				loadPercent = Math.floor(loadCount*100/(CARD_IMG_NUMBER + SOUND_NUMBER + 1));
+				bar.style.width = loadPercent + '%';
+				percent.innerHTML = loadPercent + '%';
+				if(loadPercent == 100){
+					showMenu();
+				}
+			}
+			
+			function showMenu(){
+				currentStage = STAGE_MENU;
+				clearScreen();
+				gameArea.appendChild(title);
+				gameArea.appendChild(indexImage);
+				var div = document.createElement('div');
+				div.classList.add('center');
+				div.appendChild(btnStart);
+				div.appendChild(btnGallery);
+				gameArea.appendChild(div);
+				gameArea.appendChild(logo);
+			}
+			
+			function showGallery(){
+				currentStage = STAGE_GALLERY;
+				clearScreen();
+				gameArea.appendChild(title);
+				gameArea.appendChild(gallery);
+				var center = document.createElement('center');
+				center.appendChild(btnIndex);
+				gameArea.appendChild(center);
+			}
+			
+			function startPrepare(){
+				timeCounter = 0;
+				currentStage = STAGE_PREPARE;
+				clearScreen();
+				gameArea.appendChild(title);
+				gameArea.appendChild(counterBoard);
+				gameArea.appendChild(playground);
+				gameArea.appendChild(logo);
+				doneCount = 0;
+				for(var i=0;i<CARD_NUMBER*2;i++){
+					cardList[i] = i % CARD_NUMBER;
+				}
+				for(var i=0;i<2000;i++){
+					var tmp1 = getRandom(0, CARD_NUMBER*2-1);
+					var tmp2 = getRandom(0, CARD_NUMBER*2-1);
+					var tmp = cardList[tmp1];
+					cardList[tmp1] = cardList[tmp2];
+					cardList[tmp2] = tmp;
+					
+					tmp1 = getRandom(0, CARD_IMG_NUMBER-1);
+					tmp2 = getRandom(0, CARD_IMG_NUMBER-1);
+					tmp = cardImgList[tmp1];
+					cardImgList[tmp1] = cardImgList[tmp2];
+					cardImgList[tmp2] = tmp;
+				}
+				removeAllElements(playground);
+				for(var i=0;i<CARD_NUMBER*2;i++){
+					playground.innerHTML += 
+					'<div class="flip-container" id="card_'+i+'" data-id="'+cardList[i]+'" data-status="'+STATUS_FRONT+'">' + 
+					    '<div class="flipper">' +
+					        '<div class="front" style="background-image: url(\'card_'+(cardImgList[cardList[i]])+'.png\');"></div>'+
+					        '<div class="back cover"></div>'+
+					    '</div>'+
+					'</div>';
+				}
+				
+				minute = Math.floor((PREPARE_TIME - timeCounter)/60);
+				second = (PREPARE_TIME - timeCounter) % 60;
+				if(second < 10){second = '0' + second;}
+				counterBoard.innerHTML = minute+':'+second;
+				counterBoard.classList.add('blink');
+				
+				interval = setInterval(function(){
+					if(!gamePause){
+						timeCounter++;
+					}
+					minute = Math.floor((PREPARE_TIME - timeCounter)/60);
+					second = (PREPARE_TIME - timeCounter) % 60;
+					if(second < 10){second = '0' + second;}
+					counterBoard.innerHTML = minute+':'+second;
+					if(timeCounter >= PREPARE_TIME){
+						clearInterval(interval);
+						counterBoard.classList.remove('blink');
+						var card = document.querySelectorAll(".flip-container");
+						for(var i=0;i<card.length;i++){
+							flip(card[i]);
+						}
+						sound_disappear.play();
+						startPlay();
+					}
+				}, 1000);
+				tip.innerText = '趕緊將寶寶們記下來喔~';
+				gameArea.appendChild(tip);
+				setTimeout(function(){
+					tip.classList.add('disappear');
+					setTimeout(function(){
+						gameArea.removeChild(tip);
+						tip.classList.remove('disappear');
+					}, 300);
+				}, 3000);
+			}
+			
+			function startPlay(){
+				currentStage = STAGE_PLAYING;
+				pauseFlip = false;
+				timeCounter = 0;
+				minute = Math.floor((PLAY_TIME - timeCounter)/60);
+				second = (PLAY_TIME - timeCounter) % 60;
+				if(second < 10){second = '0' + second;}
+				counterBoard.innerHTML = minute+':'+second;
+				interval = setInterval(function(){
+					if(!gamePause){
+						timeCounter++;
+					}
+					minute = Math.floor((PLAY_TIME - timeCounter)/60);
+					second = (PLAY_TIME - timeCounter) % 60;
+					if(second < 10){second = '0' + second;}
+					counterBoard.innerHTML = minute+':'+second;
+					if(timeCounter >= PLAY_TIME){
+						clearInterval(interval);
+						sound_bg.pause();
+						sound_over.play();
+						gameOver();
+					}
+				}, 1000);
+			}
+			
+			function gameComlete(){
+				currentStage = STAGE_GAME_COMPLETE;
+				clearScreen();
+				gameArea.appendChild(title);
+				tip.innerHTML = '恭喜你在時間內完成挑戰~';
+				gameArea.appendChild(empty);
+				gameArea.appendChild(tip);
+				btnIndex.classList.add('btn-index');
+				gameArea.appendChild(btnIndex);
+				gameArea.appendChild(logo);
+			}
+			
+			function gameOver(){
+				currentStage = STAGE_GAME_OVER;
+				clearScreen();
+				gameArea.appendChild(title);
+				gameArea.appendChild(title);
+				tip.innerHTML = '哭哭，再接再厲吧~';
+				gameArea.appendChild(empty);
+				gameArea.appendChild(tip);
+				btnIndex.classList.add('btn-index');
+				gameArea.appendChild(btnIndex);
+				gameArea.appendChild(logo);
+			}
+			
+			function clearScreen(){
+				removeAllElements(gameArea);
+			}
+			
+			function flip(e){
+				e.classList.toggle('hover');
+				if(e.classList.contains('hover')){
+					e.dataset['status'] = STATUS_BACK;
+				}else{
+					e.dataset['status'] = STATUS_FRONT;
+				}
+			}
+			
+			function removeAllElements(node){
+				while (node.firstChild) {
+				    node.removeChild(node.firstChild);
+				}
+			}
+			
+			//產生min到max之間的亂數
+			function getRandom(min,max){
+			    return Math.floor(Math.random()*(max-min+1))+min;
+			};
+			
+			function resizeGame() {
+				var widthToHeight = 3 / 4;
+			    
+			    var newWidth = window.innerWidth;
+			    var newHeight = window.innerHeight;
+			    var newWidthToHeight = newWidth / newHeight;
+			    
+			    if (newWidthToHeight > widthToHeight) {
+			        newWidth = newHeight * widthToHeight;
+			        gameArea.style.height = newHeight + 'px';
+			        gameArea.style.width = newWidth + 'px';
+			    } else {
+			        newHeight = newWidth / widthToHeight;
+			        gameArea.style.width = newWidth + 'px';
+			        gameArea.style.height = newHeight + 'px';
+			    }
+			    
+			    gameArea.style.marginTop = (-newHeight / 2) + 'px';
+			    gameArea.style.marginLeft = (-newWidth / 2) + 'px';			    
+			}
+		</script>
+	</head>
+	<body onload="onload()">
+		<div id="game_area"></div>
+	</body>
+</html>
